@@ -36,10 +36,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         GPIO.add_event_detect(26, GPIO.BOTH, callback=my_callback)
-
-        while True:
-            input("Press Enter when ready\n>")
-            destroy()
+        try:
+                while True:
+                    input("Press Enter when ready\n>")
+                    destroy()
+        except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
+                destroy()
 
 
 
