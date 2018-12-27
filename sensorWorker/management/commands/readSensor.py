@@ -1,6 +1,6 @@
 from channels import Group
 from django.core.management import BaseCommand
-from time import sleep
+from time
 import RPi.GPIO as GPIO
 
 # GPIO.setmode(GPIO.BCM)
