@@ -36,7 +36,6 @@ class Command(BaseCommand):
         GPIO.add_event_detect(26, GPIO.BOTH, callback=my_callback)
 
         while True:
-            input("Press Enter when ready\n>")
             destroy()
 
 
