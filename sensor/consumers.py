@@ -9,7 +9,7 @@ import asyncio
 #             "type": "websocket.accept"
 #         })
 
-async def ws_connect(message):
+def ws_connect(message):
     print("Someone connected.")
     path = message['path']
     print(path)
@@ -23,10 +23,10 @@ async def ws_connect(message):
     else:
         print("Strange connector!!")
 
-async def ws_message(message):
+def ws_message(message):
     print("Received!! " + message['text'])
 
 
-async def ws_disconnect(message):
+def ws_disconnect(message):
     print("Someone left us...")
     Group("sensor").discard(message.reply_channel)
