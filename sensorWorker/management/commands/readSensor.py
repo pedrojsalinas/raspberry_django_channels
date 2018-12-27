@@ -3,18 +3,30 @@ from django.core.management import BaseCommand
 from time import sleep
 import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(26, GPIO.IN)
-GPIO.setup(18, GPIO.OUT)
+# GPIO.setmode(GPIO.BCM)
+# GPIO.setup(26, GPIO.IN)
+# GPIO.setup(18, GPIO.OUT)
+
+ledPin = 18
+button = 26
+
+GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
+GPIO.setup(ledPin, GPIO.OUT)   # Set ledPin's mode is output
+GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.output(ledPin, GPIO.LOW) # Set ledPin low to off led
+
+def destroy():
+        GPIO.output(ledPin, GPIO.LOW)     # led off
+        GPIO.cleanup()                     # Release resource
 
 def my_callback(channel):
-    if GPIO.input(26):     # if port 25 == 1
+    if GPIO.input(button):     # if port 25 == 1
         # print("Rising edge detected on 26")
-        GPIO.output(18, GPIO.HIGH)
+        GPIO.output(ledPin, GPIO.HIGH)
         Group("sensor").send({'text': "Button pushed"})
     else:                  # if port 256!= 1
         # print("Falling edge detected on 26")
-        GPIO.output(18, GPIO.LOW)
+        GPIO.output(ledPin, GPIO.LOW)
         Group("sensor").send({'text': "Button released"})
 
 class Command(BaseCommand):
@@ -25,23 +37,25 @@ class Command(BaseCommand):
 
         while True:
             input("Press Enter when ready\n>")
-            GPIO.output(18, GPIO.LOW)
-            GPIO.cleanup()
-#
-# from channels import Group
-# from django.core.management import BaseCommand
-# import time
-#
-# #The class must be named Command, and subclass BaseCommand
-# class Command(BaseCommand):
-#     # Show this when the user types help
-#     help = "Simulates reading sensor and sending over Channel."
-#
-#     # A command must define handle()
-#     def handle(self, *args, **options):
-#         x = 0
-#         while True:
-#             Group("sensor").send({'text': "Sensor reading=" + str(x)})
-#             time.sleep(2)
-#             x = x + 1
-#             self.stdout.write("Sensor reading..." + str(x))
+            destroy()
+
+
+
+
+
+
+
+
+
+
+
+    # help = "Simulates reading sensor and sending over Channel."
+
+    # def handle(self, *args, **kwargs):
+    #     x = 0
+    #     while True:
+    #         textToSend = "Sensor reading = " + str(x)
+    #         Group("sensor").send({'text': textToSend})
+    #         time.sleep(2)
+    #         x = x + 1
+    #         self.stdout.write("Sensor reading...." + str(x))
