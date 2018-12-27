@@ -17,7 +17,7 @@ async def ws_connect(message):
     if path == '/sensor/':
         print("Adding new user to sensor group")
         Group("sensor").add(message.reply_channel)
-        await message.reply_channel.send({
+        message.reply_channel.send({
             "text": "You're connected to sensor group :) ",
         })
     else:
