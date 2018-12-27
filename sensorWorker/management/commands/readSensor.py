@@ -23,7 +23,6 @@ def my_callback(channel):
     if (not GPIO.input(button)):     # if port 25 == 1
         # print("Rising edge detected on 26")
         GPIO.output(ledPin, GPIO.HIGH)
-        time.sleep(.1)
         Group("sensor").send({'text': "Button pushed"})
     else:                  # if port 256!= 1
         # print("Falling edge detected on 26")
