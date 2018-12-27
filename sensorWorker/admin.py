@@ -1,3 +1,5 @@
 from django.contrib import admin
+from sensorWorker.models import *
 
-# Register your models here.
+admin.site.register(Boton)
+admin.site.register(Registro)

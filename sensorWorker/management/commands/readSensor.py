@@ -2,31 +2,28 @@ from channels import Group
 from django.core.management import BaseCommand
 import time
 import RPi.GPIO as GPIO
-
-# GPIO.setmode(GPIO.BCM)
-# GPIO.setup(26, GPIO.IN)
-# GPIO.setup(18, GPIO.OUT)
+from sensorWorker.models import Registro
 
 ledPin = 18
 button = 26
 
-GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
-GPIO.setup(ledPin, GPIO.OUT)   # Set ledPin's mode is output
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(ledPin, GPIO.OUT)
 GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.output(ledPin, GPIO.LOW) # Set ledPin low to off led
+GPIO.output(ledPin, GPIO.LOW)
 
 def destroy():
-        GPIO.output(ledPin, GPIO.LOW)     # led off
-        GPIO.cleanup()                     # Release resource
+        GPIO.output(ledPin, GPIO.LOW)
+        GPIO.cleanup()
 
 def my_callback(channel):
-    if (not GPIO.input(button)):     # if port 25 == 1
-        # print("Rising edge detected on 26")
+    if (not GPIO.input(button)):
         GPIO.output(ledPin, GPIO.HIGH)
         print("led on")
         Group("sensor").send({'text': "Button pushed"})
-    else:                  # if port 256!= 1
-        # print("Falling edge detected on 26")
+        registro = Registro.objects.create(boton=2)
+        registro.save()
+    else:
         GPIO.output(ledPin, GPIO.LOW)
         print("led off")
         Group("sensor").send({'text': "Button released"})
@@ -40,7 +37,7 @@ class Command(BaseCommand):
                 while True:
                     input("Press Enter when ready\n>")
                     destroy()
-        except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
+        except KeyboardInterrupt:
                 destroy()
 
 
