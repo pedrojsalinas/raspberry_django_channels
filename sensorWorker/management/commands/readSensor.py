@@ -21,7 +21,7 @@ def my_callback(channel):
         GPIO.output(ledPin, GPIO.HIGH)
         print("led on")
         Group("sensor").send({'text': "Button pushed"})
-        registro = Registro.objects.create(boton=2)
+        registro = Registro.objects.create(boton_id=2)
         registro.save()
     else:
         GPIO.output(ledPin, GPIO.LOW)
