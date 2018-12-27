@@ -25,9 +25,9 @@ class Command(BaseCommand):
 
         while True:
             input("Press Enter when ready\n>")
+            GPIO.output(18, GPIO.LOW)
             GPIO.cleanup()
-
-# 
+#
 # from channels import Group
 # from django.core.management import BaseCommand
 # import time
