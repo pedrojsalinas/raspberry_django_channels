@@ -23,10 +23,12 @@ def my_callback(channel):
     if (not GPIO.input(button)):     # if port 25 == 1
         # print("Rising edge detected on 26")
         GPIO.output(ledPin, GPIO.HIGH)
+        print("led on")
         Group("sensor").send({'text': "Button pushed"})
     else:                  # if port 256!= 1
         # print("Falling edge detected on 26")
         GPIO.output(ledPin, GPIO.LOW)
+        print("led off")
         Group("sensor").send({'text': "Button released"})
 
 class Command(BaseCommand):
@@ -36,6 +38,7 @@ class Command(BaseCommand):
         GPIO.add_event_detect(26, GPIO.BOTH, callback=my_callback)
 
         while True:
+            input("Press Enter when ready\n>")
             destroy()
 
 
