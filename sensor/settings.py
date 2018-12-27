@@ -50,7 +50,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'sensor.urls'
-CORS_ORIGIN_ALLOW_ALL = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -127,3 +126,5 @@ CHANNEL_LAYERS = {
  "ROUTING": "sensor.routing.channel_routing",
  },
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
