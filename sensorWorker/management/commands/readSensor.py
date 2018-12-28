@@ -19,7 +19,7 @@ GPIO.setup(DOOR_SENSOR_PIN2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.output(ledPin, GPIO.LOW)
 
 def verificarSensores():
-    for (i in range(1,len(sensores))):
+    for (i in sensores):
         habitacion = Habitacion.objects.get(sensor_id=i)
         if (not GPIO.input(i)):
             print("Sensor {} encendido".format(i))
