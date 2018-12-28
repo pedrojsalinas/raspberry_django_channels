@@ -45,6 +45,8 @@ def my_callback(channel):
         registro = Registro.objects.create(sensor_id=1)
         habitacion.ocupada = True
         registro.save()
+        habitacion.save()
+
     elif (not GPIO.input(DOOR_SENSOR_PIN2)):
         habitacion = Habitacion.objects.get(pk=2)
         print("led on 1")
@@ -52,6 +54,8 @@ def my_callback(channel):
         registro = Registro.objects.create(sensor_id=2)
         habitacion.ocupada = True
         registro.save()
+        habitacion.save()
+
     else:
         # registro = Registro.objects.latest('id')
         # registro.horaSalida = time.strftime('%H:%M:%S')
@@ -59,7 +63,6 @@ def my_callback(channel):
         # time.strftime('%H:%M:%S')
         print("led off")
         Group("sensor").send({'text': "Habitacion Libre"})
-    habitacion.save()
 
 class Command(BaseCommand):
     help = "Reading sensor on port 26"
