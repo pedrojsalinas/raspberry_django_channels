@@ -2,7 +2,7 @@ from channels import Group
 from django.core.management import BaseCommand
 import time
 import RPi.GPIO as GPIO
-from sensorWorker.models import Registro
+from sensorWorker.models import *
 
 ledPin = 18
 button = 26
