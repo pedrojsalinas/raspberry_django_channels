@@ -16,10 +16,14 @@ GPIO.setup(DOOR_SENSOR_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.output(ledPin, GPIO.LOW)
 
 def verificarSensores():
+    habitacion = Habitacion.objects.get(pk=1)
     if (not GPIO.input(DOOR_SENSOR_PIN)):
         print("Sensor {} encendido".format(DOOR_SENSOR_PIN))
+        habitacion.ocupada = True
     else:
         print("Sensor {} apagado".format(DOOR_SENSOR_PIN))
+        habitacion.ocupada = False
+    habitacion.save()
 
 
 verificarSensores()
