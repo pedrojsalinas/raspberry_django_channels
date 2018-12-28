@@ -15,6 +15,8 @@ GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(DOOR_SENSOR_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.output(ledPin, GPIO.LOW)
 
+verificarSensores()
+
 def destroy():
         GPIO.output(ledPin, GPIO.LOW)
         GPIO.cleanup()
@@ -48,6 +50,13 @@ class Command(BaseCommand):
                     destroy()
         except KeyboardInterrupt:
                 destroy()
+
+def verificarSensores():
+    if (not GPIO.input(DOOR_SENSOR_PIN)):
+        print("Sensor {} encendido".format(DOOR_SENSOR_PIN))
+    else:
+        print("Sensor {} apagado".format(DOOR_SENSOR_PIN))
+
 
 
 
