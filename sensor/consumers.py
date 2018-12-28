@@ -17,9 +17,9 @@ def ws_connect(message):
     if path == '/sensor/':
         print("Adding new user to sensor group")
         Group("sensor").add(message.reply_channel)
-        # message.reply_channel.send({
-        #     "text": "Conectado :) ",
-        # })
+        message.reply_channel.send({
+            "text": "Conectado :) ",
+        })
     else:
         print("Strange connector!!")
 
