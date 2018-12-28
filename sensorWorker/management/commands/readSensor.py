@@ -20,14 +20,20 @@ def destroy():
         GPIO.cleanup()
 
 def my_callback(channel):
+    habitacion = Habitacion.objects.get(pk=1)
     if (not GPIO.input(DOOR_SENSOR_PIN)):
         GPIO.output(ledPin, GPIO.HIGH)
         print("led on")
         Group("sensor").send({'text': "Habitacion Ocupada"})
-        registro = Registro.objects.create(boton_id=2)
+        registro = Registro.objects.create(sensor_id=1)
+        habitacion.ocupada = True
         registro.save()
+        habitacion.save()
     else:
         GPIO.output(ledPin, GPIO.LOW)
+        habitacion.ocupada = False
+        habitacion.save()
+        # time.strftime('%H:%M:%S')
         print("led off")
         Group("sensor").send({'text': "Habitacion Libre"})
 
