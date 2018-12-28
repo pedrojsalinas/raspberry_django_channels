@@ -20,14 +20,15 @@ GPIO.output(ledPin, GPIO.LOW)
 
 def verificarSensores():
     for i in sensores:
-        habitacion = Habitacion.objects.get(sensor_id=i)
+        sensor = Sensor.objects.get(pin=i)
+        habitacion = Habitacion.objects.get(sensor_id=sensor.id)
         if (not GPIO.input(i)):
             print("Sensor {} encendido".format(i))
             habitacion.ocupada = True
         else:
             print("Sensor {} apagado".format(i))
             habitacion.ocupada = False
-        # habitacion.save()
+        habitacion.save()
 
 
 verificarSensores()
