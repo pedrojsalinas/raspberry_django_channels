@@ -7,23 +7,27 @@ from sensorWorker.models import *
 ledPin = 18
 button = 26
 DOOR_SENSOR_PIN = 5
+DOOR_SENSOR_PIN2 = 25
 
+sensores = [DOOR_SENSOR_PIN,DOOR_SENSOR_PIN2]
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(ledPin, GPIO.OUT)
 GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(DOOR_SENSOR_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(DOOR_SENSOR_PIN2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.output(ledPin, GPIO.LOW)
 
 def verificarSensores():
-    habitacion = Habitacion.objects.get(pk=1)
-    if (not GPIO.input(DOOR_SENSOR_PIN)):
-        print("Sensor {} encendido".format(DOOR_SENSOR_PIN))
-        habitacion.ocupada = True
-    else:
-        print("Sensor {} apagado".format(DOOR_SENSOR_PIN))
-        habitacion.ocupada = False
-    habitacion.save()
+    for (i in range(1,len(sensores))):
+        habitacion = Habitacion.objects.get(sensor_id=i)
+        if (not GPIO.input(i)):
+            print("Sensor {} encendido".format(i))
+            habitacion.ocupada = True
+        else:
+            print("Sensor {} apagado".format(i))
+            habitacion.ocupada = False
+        habitacion.save()
 
 
 verificarSensores()
@@ -40,6 +44,7 @@ def my_callback(channel):
         Group("sensor").send({'text': "Habitacion Ocupada"})
         registro = Registro.objects.create(sensor_id=1)
         habitacion.ocupada = True
+        registro.save()
 
     else:
         GPIO.output(ledPin, GPIO.LOW)
@@ -49,7 +54,6 @@ def my_callback(channel):
         # time.strftime('%H:%M:%S')
         print("led off")
         Group("sensor").send({'text': "Habitacion Libre"})
-    registro.save()
     habitacion.save()
 
 class Command(BaseCommand):
